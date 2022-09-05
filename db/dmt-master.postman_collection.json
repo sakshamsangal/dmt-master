@@ -7,12 +7,22 @@
 	},
 	"item": [
 		{
-			"name": "process xml",
+			"name": "xml/process",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "path",
+							"value": "C:\\Users\\saksangal\\Documents\\AirDroid\\static\\xml",
+							"type": "text"
+						}
+					]
+				},
 				"url": {
-					"raw": "http://127.0.0.1:5000/px",
+					"raw": "http://127.0.0.1:5000/xml/process",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -22,14 +32,49 @@
 					],
 					"port": "5000",
 					"path": [
-						"px"
+						"xml",
+						"process"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "tag master",
+			"name": "tag/all",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/tag/all",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"tag",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tag/unique",
 			"event": [
 				{
 					"listen": "test",
@@ -62,7 +107,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/tag",
+					"raw": "http://127.0.0.1:5000/tag/unique",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -72,14 +117,38 @@
 					],
 					"port": "5000",
 					"path": [
-						"tag"
+						"tag",
+						"unique"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "file master",
+			"name": "tag/rem",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/tag/rem",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"tag",
+						"rem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "file",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -101,12 +170,12 @@
 			"response": []
 		},
 		{
-			"name": "move to active",
+			"name": "file/tag/?file",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/sf/book2.xml",
+					"raw": "http://127.0.0.1:5000/file/tag/book.xml",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -116,20 +185,21 @@
 					],
 					"port": "5000",
 					"path": [
-						"sf",
-						"book2.xml"
+						"file",
+						"tag",
+						"book.xml"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "tag rem",
+			"name": "file/?file/?status",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/tag-rem",
+					"raw": "http://127.0.0.1:5000/file/book.xml/active",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -139,19 +209,21 @@
 					],
 					"port": "5000",
 					"path": [
-						"tag-rem"
+						"file",
+						"book.xml",
+						"active"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "file rem",
+			"name": "file/rem",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/file-rem",
+					"raw": "http://127.0.0.1:5000/file/rem",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -161,40 +233,8 @@
 					],
 					"port": "5000",
 					"path": [
-						"file-rem"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "tb_main",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:5000/main",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000",
-					"path": [
-						"main"
+						"file",
+						"rem"
 					]
 				}
 			},

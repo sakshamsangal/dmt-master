@@ -1,21 +1,22 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, request, jsonify
 from service import tag_service as ts
 from service import xml_service as xs
 
 app = Flask(__name__)
 
 
-@app.route('/tag')
-def tag():
-    return ts.tag_service()
-
-
-@app.route('/main')
-def tb_main():
+@app.route('/tag/all')
+def tag_all():
     return ts.select_tb_main()
 
 
-@app.route('/tag-rem')
+@app.route('/tag/unique')
+def tag_unique():
+    ln, x = ts.tag_service()
+    return jsonify({'total_tag': ln, 'tags': x})
+
+
+@app.route('/tag/rem')
 def tag_rem():
     return ts.tag_service_rem()
 
@@ -24,8 +25,11 @@ def tag_rem():
 def file():
     return ts.file_service()
 
+@app.route('/file/tag/<string:xml_file>')
+def select_one(xml_file):
+    return ts.select_one(xml_file)
 
-@app.route('/file-rem')
+@app.route('/file/rem')
 def file_rem():
     return ts.file_service_rem()
 
@@ -36,19 +40,18 @@ def clear():
     return {'clear': 1}
 
 
-@app.route('/sf/<string:xml_file>', methods=["GET"])
-def set_file(xml_file):
-    ts.set_file(xml_file)
-    return {'sf': xml_file}
+@app.route('/file/<string:xml_file>/<string:status>', methods=["GET"])
+def change_tag_status(xml_file, status):
+    ts.change_tag_status(xml_file, status)
+    return {'file_name': xml_file, 'status': status}
 
 
-
-
-@app.route("/px", methods=["GET"])
-def px():
-    if request.method == "GET":
-        xs.process_xml()
-        return {'xml_processed': 1}
+@app.route("/xml/process", methods=["POST"])
+def xml_process():
+    if request.method == "POST":
+        xml_path = request.form['path']
+        xs.process_xml(xml_path)
+        return jsonify({'xml_processed': 1})
 
 
 if __name__ == '__main__':

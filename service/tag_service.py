@@ -2,8 +2,8 @@ from dao import tag_dao as td
 
 
 def tag_service():
-    x = td.select_tag_master()
-    return x
+    ln, x = td.select_tag_master()
+    return ln, x
 
 def tag_service_rem():
     x = td.select_tag_master_rem()
@@ -12,6 +12,11 @@ def tag_service_rem():
 
 def file_service():
     x = td.select_file_master()
+    return x
+
+
+def select_one(xml_file):
+    x = td.select_one(xml_file)
     return x
 
 
@@ -24,8 +29,9 @@ def clear_tb():
     td.clear_tb()
 
 
-def set_file(xml_file):
-    td.set_file(xml_file)
+def change_tag_status(xml_file,status):
+    td.change_tag_status(xml_file,status)
+
 
 
 def select_tb_main():
