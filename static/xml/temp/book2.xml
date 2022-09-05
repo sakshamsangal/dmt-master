@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<catalog>
+    <book id="bk104">
+        <author id1="bk101">1Corets, Eva</author>
+        <title>Maeve Ascendant</title>
+        <genre>Fantasy</genre>
+        <car>Fantasy</car>
+        <price>5.95</price>
+        <publish_date>2000-11-17</publish_date>
+        <description>After the collapse of a nanotechnology
+            society in England, the young survivors lay the
+            foundation for a new society.
+        </description>
+    </book>
+</catalog>

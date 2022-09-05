@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<catalog>
+    <book id="bk101">
+        <genre>Computer</genre>
+        <description>An in-depth look at creating applications
+            with XML.
+        </description>
+    </book>
+    <book id="bk103">
+        <lavi id1="bk101">Corets, Eva</lavi>
+        <akshu>Maeve Ascendant</akshu>
+        <genre>Fantasy</genre>
+        <description>After the collapse of a nanotechnology
+            society in England, the young survivors lay the
+            foundation for a new society.
+        </description>
+    </book>
+</catalog>

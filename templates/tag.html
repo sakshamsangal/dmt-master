@@ -1,0 +1,18 @@
+<table id="tag_list_table" class="table table-bordered table-hover" border="1">
+    <thead>
+    <tr>
+        <th>tag</th>
+        <th>file_name</th>
+        <th>prod_name</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for x in ls %}
+        <tr>
+            <td>{{ x[0] }}</td>
+            <td>{{ x[1] }}</td>
+            <td>{{ x[2] }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
