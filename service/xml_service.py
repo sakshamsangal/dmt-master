@@ -38,17 +38,18 @@ def process_xml(path):
             file_size = round(os.stat(xml_file).st_size / 1024,2)
             print(file_size)
             for y in tag_set:
-                x.append((f'{file_name}@{y}', file_name, y, prod_name, file_size, 'new'))
+                x.append((f'{file_name}@{y}', file_name, y, prod_name, file_size))
             res.append((prod_name,file_name))
 
         for y in g_tag_set:
             z.append((y, '', '', 'new'))
 
-        td.create_tb_main()
-        td.create_tb_tag_master()
+        td.create_tb_t1('tb_main')
+        td.create_tb_t1('tb_rem_tag')
+        td.create_tb_t1('tb_temp')
 
-        td.create_tb_temp()
-        td.create_tb_temp_tag_master()
+        td.create_tb_t2('tb_tag_master')
+        td.create_tb_t2('tb_temp_tag_master')
 
         td.insert(x)
         td.insert_tag_master(z)

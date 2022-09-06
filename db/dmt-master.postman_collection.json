@@ -40,114 +40,6 @@
 			"response": []
 		},
 		{
-			"name": "tag/all",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:5000/tag/all",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000",
-					"path": [
-						"tag",
-						"all"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "tag/unique",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var template = `\r",
-							"    <table bgcolor=\"#FFFFFF\">\r",
-							"        <tr>\r",
-							"            <th>Name</th>\r",
-							"            <th>Email</th>\r",
-							"            <th>Email</th>\r",
-							"        </tr>\r",
-							"        {{#each response}}\r",
-							"            <tr>\r",
-							"                <td>{{file_name}}</td>\r",
-							"                <td>{{prod_name}}</td>\r",
-							"                <td>{{tag}}</td>\r",
-							"            </tr>\r",
-							"        {{/each}}\r",
-							"    </table>`;\r",
-							"pm.visualizer.set(template, {\r",
-							"    response: pm.response.json()\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:5000/tag/unique",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000",
-					"path": [
-						"tag",
-						"unique"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "tag/rem",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:5000/tag/rem",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000",
-					"path": [
-						"tag",
-						"rem"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "file",
 			"request": {
 				"method": "GET",
@@ -170,12 +62,12 @@
 			"response": []
 		},
 		{
-			"name": "file/tag/?file",
+			"name": "file/?file/?status",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/file/tag/book.xml",
+					"raw": "http://127.0.0.1:5000/file/book.xml",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -186,7 +78,6 @@
 					"port": "5000",
 					"path": [
 						"file",
-						"tag",
 						"book.xml"
 					]
 				}
@@ -194,12 +85,12 @@
 			"response": []
 		},
 		{
-			"name": "file/?file/?status",
+			"name": "file/rem/sim",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/file/book.xml/active",
+					"raw": "http://127.0.0.1:5000/file/rem/sim",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -210,8 +101,8 @@
 					"port": "5000",
 					"path": [
 						"file",
-						"book.xml",
-						"active"
+						"rem",
+						"sim"
 					]
 				}
 			},
@@ -234,6 +125,29 @@
 					"port": "5000",
 					"path": [
 						"file",
+						"rem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tag/rem",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/tag/rem",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"tag",
 						"rem"
 					]
 				}
@@ -268,6 +182,130 @@
 					"port": "5000",
 					"path": [
 						"clear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ca",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/ca",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"ca"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "file-to-consider",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/file-to-consider",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"file-to-consider"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "rem-tag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/rem-tag/book2.xml",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"rem-tag",
+						"book2.xml"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "file/tag/?file",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/file/tag/book.xml",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"file",
+						"tag",
+						"book.xml"
 					]
 				}
 			},

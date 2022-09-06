@@ -1,45 +1,24 @@
 import sqlite3
 
-
 conn = sqlite3.connect('db/dmt_master.db', check_same_thread=False)
 # conn = sqlite3.connect('../db/dmt_master.db', check_same_thread=False)
 conn.row_factory = sqlite3.Row
 cursor = conn.cursor()
 
 
-def create_tb_temp():
-    cursor.execute(f"""CREATE TABLE if not exists tb_temp(
+
+def create_tb_t1(tb_name):
+    cursor.execute(f"""CREATE TABLE IF NOT EXISTS {tb_name} (
         id text,
         file_name text,
         tag text,
         prod_name text,
-        file_size real default 0,
-        status text default 'new'
+        file_size real default 0
     )""")
 
 
-def create_tb_temp_tag_master():
-    cursor.execute(f"""CREATE TABLE IF NOT EXISTS tb_temp_tag_master(
-           tag text,
-           file_name text,
-           prod_name text,
-           status text default 'new'
-       )""")
-
-
-def create_tb_main():
-    cursor.execute(f"""CREATE TABLE IF NOT EXISTS tb_main(
-        id text,
-        file_name text,
-        tag text,
-        prod_name text,
-        file_size int default 0,
-        status text default 'new'
-    )""")
-
-
-def create_tb_tag_master():
-    cursor.execute(f"""CREATE TABLE IF NOT EXISTS tb_tag_master(
+def create_tb_t2(tb_name):
+    cursor.execute(f"""CREATE TABLE IF NOT EXISTS {tb_name} (
         tag text,
         file_name text,
         prod_name text,
@@ -48,7 +27,7 @@ def create_tb_tag_master():
 
 
 def insert(data):
-    insert_query = 'INSERT INTO tb_temp VALUES(?,?,?,?,?,?)'
+    insert_query = 'INSERT INTO tb_temp VALUES(?,?,?,?,?)'
     cursor.executemany(insert_query, data)
     conn.commit()
 
@@ -81,14 +60,6 @@ def drop_tb(tb_name):
         conn.rollback()
 
 
-def select_tag_master():
-    q = '''SELECT tag, file_name, prod_name from tb_main group by tag'''
-    cursor.execute(q)
-    result = cursor.fetchall()
-    return len(result), get_list_of_dic(result)
-
-    # return result
-
 
 def get_list_of_dic(result):
     ls = []
@@ -97,16 +68,17 @@ def get_list_of_dic(result):
     return ls
 
 
-def select_tb_main():
-    q = '''SELECT * from tb_main'''
+
+def select_one(xml_file):
+    q = f'''SELECT * from tb_main where file_name="{xml_file}"'''
     c = conn.cursor()
     c.execute(q)
     result = c.fetchall()
     return get_list_of_dic(result)
 
 
-def select_one(xml_file):
-    q = f'''SELECT * from tb_main where file_name="{xml_file}"'''
+def rem_tag(xml_file):
+    q = f'''SELECT tag from tb_rem_tag where file_name="{xml_file}"'''
     c = conn.cursor()
     c.execute(q)
     result = c.fetchall()
@@ -123,7 +95,7 @@ def select_tag_master_rem():
 
 def select_file_master():
     q = '''
-    SELECT  file_name,COUNT(tag), file_size
+    SELECT  file_name,COUNT(tag) as tag_count, file_size
     FROM tb_main
     GROUP BY file_name 
     ORDER BY COUNT(tag) DESC;
@@ -134,16 +106,35 @@ def select_file_master():
 
 
 def select_file_master_rem():
-    q = f'''
-        SELECT file_name, COUNT(tag), file_size
-        FROM tb_main where tag in (SELECT tag from tb_tag_master where status="new")
+    q = '''
+        SELECT  file_name,COUNT(tag) as tag_count, file_size
+        FROM tb_rem_tag
         GROUP BY file_name 
         ORDER BY COUNT(tag) DESC;
-    '''
+        '''
     cursor.execute(q)
     result = cursor.fetchall()
-    return get_list_of_dic(result)
-    # return result
+    x = get_list_of_dic(result)
+
+    for item in x:
+        file_name = item['file_name']
+        tags = rem_tag(file_name)
+        item['tags'] = tags
+    return x
+
+
+def select_file_master_rem_sim():
+    q = '''
+        SELECT  file_name,COUNT(tag) as tag_count, file_size
+        FROM tb_rem_tag
+        GROUP BY file_name 
+        ORDER BY COUNT(tag) DESC;
+        '''
+    cursor.execute(q)
+    result = cursor.fetchall()
+    x = get_list_of_dic(result)
+    return x
+
 
 
 def clear_tb():
@@ -151,25 +142,47 @@ def clear_tb():
     cursor.execute(q)
 
 
-def change_tag_status(xml_file, status):
-    q = f'''SELECT tag,prod_name from tb_main where file_name="{xml_file}"'''
+def change_tag_status(xml_file):
+    q = f'''SELECT tag,prod_name from tb_rem_tag where file_name="{xml_file}"'''
     cursor.execute(q)
     result = cursor.fetchall()
-    ls = []
-    if status == 'new':
-        for item in result:
-            ls.append(('', '', status, item['tag']))
-    else:
-        for item in result:
-            ls.append((xml_file, item['prod_name'], status, item['tag']))
+    tag_ls = []
+    tag_ls_for_delete = []
+    for item in result:
+        tag_ls.append((xml_file, item['prod_name'], 'active', item['tag']))
+        tag_ls_for_delete.append((item['tag'],))
 
-    q = f"update tb_tag_master set file_name=?, prod_name=? , status=? where tag=?"
-    cursor.executemany(q, ls)
+    q = "update tb_tag_master set file_name=?, prod_name=? , status=? where tag=?"
+    cursor.executemany(q, tag_ls)
+
+    q = "DELETE FROM tb_rem_tag WHERE tag=?"
+    cursor.executemany(q, tag_ls_for_delete)
+
     conn.commit()
 
 
+def copy_tb():
+    q = "delete from tb_rem_tag"
+    cursor.execute(q)
+    cursor.execute("INSERT INTO tb_rem_tag SELECT * FROM tb_main;")
+    conn.commit()
 
+
+def ca():
+    copy_tb()
+    q = "update tb_tag_master set file_name='', prod_name='' , status='new'"
+    cursor.execute(q)
+    conn.commit()
 
 
 # if __name__ == '__main__':
-#     set_file('book2.xml')
+#     change_tag_status('book2.xml', '')
+    # create_tb_rem_tag()
+
+
+def file_to_consider():
+    q = '''SELECT distinct file_name, prod_name from tb_tag_master'''
+    c = conn.cursor()
+    c.execute(q)
+    result = c.fetchall()
+    return get_list_of_dic(result)
