@@ -6,7 +6,6 @@ conn.row_factory = sqlite3.Row
 cursor = conn.cursor()
 
 
-
 def create_tb_t1(tb_name):
     cursor.execute(f"""CREATE TABLE IF NOT EXISTS {tb_name} (
         id text,
@@ -22,6 +21,9 @@ def create_tb_t2(tb_name):
         tag text,
         file_name text,
         prod_name text,
+        tag_count int default 0,
+        file_size real default 0,
+        cost real default 0,
         status text default 'new'
     )""")
 
@@ -33,7 +35,7 @@ def insert(data):
 
 
 def insert_tag_master(data):
-    insert_query = 'INSERT INTO tb_temp_tag_master VALUES(?,?,?,?)'
+    insert_query = 'INSERT INTO tb_temp_tag_master VALUES(?,?,?,?,?,?,?)'
     cursor.executemany(insert_query, data)
     conn.commit()
 
@@ -60,13 +62,11 @@ def drop_tb(tb_name):
         conn.rollback()
 
 
-
 def get_list_of_dic(result):
     ls = []
     for item in result:
         ls.append({k: item[k] for k in item.keys()})
     return ls
-
 
 
 def select_one(xml_file):
@@ -95,10 +95,10 @@ def select_tag_master_rem():
 
 def select_file_master():
     q = '''
-    SELECT  file_name,COUNT(tag) as tag_count, file_size
+    SELECT  file_name,COUNT(tag) as tag_count, file_size,ROUND(file_size / COUNT(file_name),3) as cost 
     FROM tb_main
     GROUP BY file_name 
-    ORDER BY COUNT(tag) DESC;
+    ORDER BY cost ASC;
     '''
     cursor.execute(q)
     result = cursor.fetchall()
@@ -107,10 +107,10 @@ def select_file_master():
 
 def select_file_master_rem():
     q = '''
-        SELECT  file_name,COUNT(tag) as tag_count, file_size
+        SELECT  file_name,COUNT(tag) as tag_count, file_size,ROUND(file_size / COUNT(file_name),3) as cost 
         FROM tb_rem_tag
         GROUP BY file_name 
-        ORDER BY COUNT(tag) DESC;
+        ORDER BY cost ASC;
         '''
     cursor.execute(q)
     result = cursor.fetchall()
@@ -125,7 +125,7 @@ def select_file_master_rem():
 
 def select_file_master_rem_sim():
     q = '''
-        SELECT  file_name,COUNT(tag) as tag_count, file_size
+        SELECT  file_name,COUNT(tag) as tag_count, file_size,ROUND(file_size / COUNT(file_name),3) as cost 
         FROM tb_rem_tag
         GROUP BY file_name 
         ORDER BY COUNT(tag) DESC;
@@ -136,23 +136,34 @@ def select_file_master_rem_sim():
     return x
 
 
-
 def clear_tb():
     q = '''Delete FROM tb_main'''
     cursor.execute(q)
 
 
 def change_tag_status(xml_file):
-    q = f'''SELECT tag,prod_name from tb_rem_tag where file_name="{xml_file}"'''
+    q = f'''
+            SELECT prod_name, COUNT(file_name) as tag_count, file_size, ROUND(file_size / COUNT(file_name),3) as cost 
+            FROM tb_rem_tag
+            GROUP BY file_name having file_name="{xml_file}"
+            ORDER BY cost asc;
+        '''
+    cursor.execute(q)
+    result2 = dict(cursor.fetchone())
+
+    q = f'''SELECT tag, prod_name from tb_rem_tag where file_name="{xml_file}"'''
     cursor.execute(q)
     result = cursor.fetchall()
+
     tag_ls = []
     tag_ls_for_delete = []
     for item in result:
-        tag_ls.append((xml_file, item['prod_name'], 'active', item['tag']))
+        tag_ls.append(
+            (xml_file, result2['prod_name'], result2['tag_count'], result2['file_size'], result2['cost'], 'active',
+             item['tag']))
         tag_ls_for_delete.append((item['tag'],))
 
-    q = "update tb_tag_master set file_name=?, prod_name=? , status=? where tag=?"
+    q = "update tb_tag_master set file_name=?, prod_name=? ,tag_count=?, file_size=?,cost=?, status=? where tag=?"
     cursor.executemany(q, tag_ls)
 
     q = "DELETE FROM tb_rem_tag WHERE tag=?"
@@ -170,18 +181,26 @@ def copy_tb():
 
 def ca():
     copy_tb()
-    q = "update tb_tag_master set file_name='', prod_name='' , status='new'"
+    q = "update tb_tag_master set file_name='', prod_name='', tag_count=0, file_size=0, cost=0 , status='new'"
     cursor.execute(q)
     conn.commit()
 
 
 # if __name__ == '__main__':
-#     change_tag_status('book2.xml', '')
-    # create_tb_rem_tag()
+#     change_tag_status('book2.xml')
+#     # create_tb_rem_tag()
 
 
 def file_to_consider():
-    q = '''SELECT distinct file_name, prod_name from tb_tag_master'''
+    q = '''SELECT distinct file_name, prod_name, tag_count, cost from tb_tag_master order by cost'''
+    c = conn.cursor()
+    c.execute(q)
+    result = c.fetchall()
+    return get_list_of_dic(result)
+
+
+def tag_in_file(tag_name):
+    q = f'''select DISTINCT file_name, file_size from tb_rem_tag where tag="{tag_name}" ORDER by file_size asc;'''
     c = conn.cursor()
     c.execute(q)
     result = c.fetchall()

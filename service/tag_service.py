@@ -46,3 +46,7 @@ def ca():
 
 def file_to_consider():
     return td.file_to_consider()
+
+
+def tag_in_file(tag_name):
+    return td.tag_in_file(tag_name)

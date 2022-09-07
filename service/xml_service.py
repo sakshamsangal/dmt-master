@@ -42,7 +42,7 @@ def process_xml(path):
             res.append((prod_name,file_name))
 
         for y in g_tag_set:
-            z.append((y, '', '', 'new'))
+            z.append((y, '', '',  '0', '0','0','new'))
 
         td.create_tb_t1('tb_main')
         td.create_tb_t1('tb_rem_tag')
