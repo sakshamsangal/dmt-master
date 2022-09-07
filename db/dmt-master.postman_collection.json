@@ -16,7 +16,7 @@
 					"formdata": [
 						{
 							"key": "path",
-							"value": "C:\\Users\\saksangal\\Documents\\AirDroid\\static\\xml",
+							"value": "C:\\Users\\saksangal\\Documents\\IT\\Python\\Project\\dmt-master\\static\\xml",
 							"type": "text"
 						}
 					]
@@ -62,12 +62,21 @@
 			"response": []
 		},
 		{
-			"name": "file/?file/?status",
+			"name": "active",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"file_name\": [\r\n        \"book.xml\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://127.0.0.1:5000/file/book.xml",
+					"raw": "http://127.0.0.1:5000/active",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -77,8 +86,7 @@
 					],
 					"port": "5000",
 					"path": [
-						"file",
-						"book.xml"
+						"active"
 					]
 				}
 			},
@@ -306,6 +314,29 @@
 						"file",
 						"tag",
 						"book.xml"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tag-in-file",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/tag-in-file/catalog",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"tag-in-file",
+						"catalog"
 					]
 				}
 			},
