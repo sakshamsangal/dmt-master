@@ -10,7 +10,6 @@ app = Flask(__name__)
 
 from werkzeug.exceptions import HTTPException
 
-
 @app.errorhandler(HTTPException)
 def handle_exception(e):
     response = e.get_response()

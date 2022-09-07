@@ -2,8 +2,8 @@ import sqlite3
 
 import pandas as pd
 
-conn = sqlite3.connect('db/dmt_master.db', check_same_thread=False)
-# conn = sqlite3.connect('../db/dmt_master.db', check_same_thread=False)
+# conn = sqlite3.connect('db/dmt_master.db', check_same_thread=False)
+conn = sqlite3.connect('../db/dmt_master.db', check_same_thread=False)
 conn.row_factory = sqlite3.Row
 cursor = conn.cursor()
 
@@ -27,6 +27,16 @@ def create_tb_t2(tb_name):
         file_size real default 0,
         cost real default 0,
         status text default 'new'
+    )""")
+
+
+def create_tb_t3(tb_name):
+    cursor.execute(f"""CREATE TABLE IF NOT EXISTS {tb_name} (
+        tag text,
+        map_tag text,
+        rendered text,
+        file_name text,
+        prod_name text
     )""")
 
 
@@ -180,3 +190,12 @@ def tag_in_file(tag_name):
     c.execute(q)
     result = c.fetchall()
     return get_list_of_dic(result)
+
+
+def insert_tb_temp_tm2(data):
+    insert_query = 'INSERT INTO tb_temp_tm2 VALUES(?,?,?,?,?)'
+    cursor.executemany(insert_query, data)
+    conn.commit()
+
+# if __name__ == '__main__':
+    # create_tb_t3('tm2')
