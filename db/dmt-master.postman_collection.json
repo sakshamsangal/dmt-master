@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"folder_name\": [\r\n        \"book\"\r\n    ],\r\n    \"loc\":\"C:\\\\Users\\\\saksangal\\\\Pictures\\\\saksham\"\r\n}",
+					"raw": "{\r\n    \"folder_name\": [\r\n        \"akshu3\"\r\n    ],\r\n    \"loc\":\"{{loc}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -44,7 +44,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"prod\": [\r\n        \"book\"\r\n    ],\r\n    \"loc\":\"C:\\\\Users\\\\saksangal\\\\Pictures\\\\saksham\"\r\n}",
+					"raw": "{\r\n    \"prod\": [\r\n        \"book\"\r\n    ],\r\n    \"loc\":\"{{loc}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -75,7 +75,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"prod\": \"book\",\r\n    \"tag_selected\": {\r\n        \"book\": 1\r\n    },\r\n    \"loc\": \"C:\\\\Users\\\\saksangal\\\\Pictures\\\\saksham\"\r\n}",
+					"raw": "{\r\n    \"prod\": \"book\",\r\n    \"tag_selected\": {\r\n        \"book\": 1\r\n    },\r\n    \"loc\": \"{{loc}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -106,7 +106,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"prod\": \"book\",\r\n    \"loc\": \"C:\\\\Users\\\\saksangal\\\\Pictures\\\\saksham\"\r\n}",
+					"raw": "{\r\n    \"prod\": \"book\",\r\n    \"loc\": \"{{loc}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -292,7 +292,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"prod\": \"book\",\r\n    \"loc\": \"C:\\\\Users\\\\saksangal\\\\Pictures\\\\saksham\",\r\n    \"tb_name\": \"tb_tag_master\"\r\n}",
+					"raw": "{\r\n    \"prod\": \"book\",\r\n    \"tb_name\": \"tb_tag_master\",\r\n    \"loc\": \"{{loc}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
