@@ -1,5 +1,7 @@
 import sqlite3
 
+import pandas as pd
+
 conn = sqlite3.connect('db/dmt_master.db', check_same_thread=False)
 # conn = sqlite3.connect('../db/dmt_master.db', check_same_thread=False)
 conn.row_factory = sqlite3.Row
@@ -69,14 +71,6 @@ def get_list_of_dic(result):
     return ls
 
 
-def select_one(xml_file):
-    q = f'''SELECT * from tb_main where file_name="{xml_file}"'''
-    c = conn.cursor()
-    c.execute(q)
-    result = c.fetchall()
-    return get_list_of_dic(result)
-
-
 def rem_tag(xml_file):
     q = f'''SELECT tag from tb_rem_tag where file_name="{xml_file}"'''
     c = conn.cursor()
@@ -85,32 +79,25 @@ def rem_tag(xml_file):
     return get_list_of_dic(result)
 
 
-def select_tag_master_rem():
-    q = '''SELECT tag FROM tb_tag_master where status="new"'''
-    cursor.execute(q)
-    result = cursor.fetchall()
-    return get_list_of_dic(result)
-    # return result
-
-
-def select_file_master():
-    q = '''
-    SELECT  file_name,COUNT(tag) as tag_count, file_size,ROUND(file_size / COUNT(file_name),3) as cost 
-    FROM tb_main
-    GROUP BY file_name 
-    ORDER BY cost ASC;
-    '''
-    cursor.execute(q)
-    result = cursor.fetchall()
-    return get_list_of_dic(result)
-
-
 def select_file_master_rem():
     q = '''
         SELECT  file_name,COUNT(tag) as tag_count, file_size,ROUND(file_size / COUNT(file_name),3) as cost 
         FROM tb_rem_tag
         GROUP BY file_name 
-        ORDER BY cost ASC;
+        ORDER BY COUNT(tag) DESC, cost ASC;
+        '''
+    cursor.execute(q)
+    result = cursor.fetchall()
+    x = get_list_of_dic(result)
+    return x
+
+
+def file_service_rem_with_tag():
+    q = '''
+        SELECT  file_name,COUNT(tag) as tag_count, file_size,ROUND(file_size / COUNT(file_name),3) as cost 
+        FROM tb_rem_tag
+        GROUP BY file_name 
+        ORDER BY COUNT(tag) DESC, cost ASC;
         '''
     cursor.execute(q)
     result = cursor.fetchall()
@@ -123,30 +110,21 @@ def select_file_master_rem():
     return x
 
 
-def select_file_master_rem_sim():
-    q = '''
-        SELECT  file_name,COUNT(tag) as tag_count, file_size,ROUND(file_size / COUNT(file_name),3) as cost 
-        FROM tb_rem_tag
-        GROUP BY file_name 
-        ORDER BY COUNT(tag) DESC;
-        '''
-    cursor.execute(q)
-    result = cursor.fetchall()
-    x = get_list_of_dic(result)
-    return x
-
-
 def clear_tb():
     q = '''Delete FROM tb_main'''
     cursor.execute(q)
+
+    q = '''Delete FROM tb_rem_tag'''
+    cursor.execute(q)
+
+    conn.commit()
 
 
 def change_tag_status(xml_file):
     q = f'''
             SELECT prod_name, COUNT(file_name) as tag_count, file_size, ROUND(file_size / COUNT(file_name),3) as cost 
             FROM tb_rem_tag
-            GROUP BY file_name having file_name="{xml_file}"
-            ORDER BY cost asc;
+            GROUP BY file_name having file_name="{xml_file}";
         '''
     cursor.execute(q)
     result2 = dict(cursor.fetchone())
@@ -186,17 +164,14 @@ def ca():
     conn.commit()
 
 
-# if __name__ == '__main__':
-#     change_tag_status('book2.xml')
-#     # create_tb_rem_tag()
-
-
-def file_to_consider():
-    q = '''SELECT distinct file_name, prod_name, tag_count, cost from tb_tag_master order by cost'''
+def export_tb_tag_master(loc, prod, tb_name):
+    # q = '''SELECT distinct file_name, prod_name, tag_count, cost from tb_tag_master order by cost'''
+    q = f'''SELECT * from {tb_name} order by cost'''
     c = conn.cursor()
     c.execute(q)
     result = c.fetchall()
-    return get_list_of_dic(result)
+    df = pd.DataFrame(result)
+    df.to_excel(f'{loc}/{prod}/excel/export_{tb_name}.xlsx', index=False)
 
 
 def tag_in_file(tag_name):

@@ -19,10 +19,10 @@ def xml_traverse(root):
             xml_traverse(child)
 
 
-def process_xml(path):
+def process_xml(path, my_prod):
     res = []
     global prod_name, file_name, tag_set
-    for prod_path in glob.glob(f"{path}/*"):
+    for prod_path in glob.glob(f"{path}/{my_prod}/xml/chunk_xml_{my_prod}/*"):
         print(prod_path)
         prod = prod_path.rsplit('\\', 1)[1]
         prod_name = prod
@@ -60,4 +60,5 @@ def process_xml(path):
         td.drop_tb('tb_temp')
         td.drop_tb('tb_temp_tag_master')
 
+    td.copy_tb()
     return res

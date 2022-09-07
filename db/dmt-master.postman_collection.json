@@ -7,19 +7,111 @@
 	},
 	"item": [
 		{
+			"name": "dir-maker",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"folder_name\": [\r\n        \"book\"\r\n    ],\r\n    \"loc\":\"C:\\\\Users\\\\saksangal\\\\Pictures\\\\saksham\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dir-maker",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dir-maker"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tag-master-excel",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"prod\": [\r\n        \"book\"\r\n    ],\r\n    \"loc\":\"C:\\\\Users\\\\saksangal\\\\Pictures\\\\saksham\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/tag-master-excel",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"tag-master-excel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "xml-chunk",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"prod\": \"book\",\r\n    \"tag_selected\": {\r\n        \"book\": 1\r\n    },\r\n    \"loc\": \"C:\\\\Users\\\\saksangal\\\\Pictures\\\\saksham\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/xml-chunk",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"xml-chunk"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "xml/process",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "path",
-							"value": "C:\\Users\\saksangal\\Documents\\IT\\Python\\Project\\dmt-master\\static\\xml",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\r\n    \"prod\": \"book\",\r\n    \"loc\": \"C:\\\\Users\\\\saksangal\\\\Pictures\\\\saksham\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
 					"raw": "http://127.0.0.1:5000/xml/process",
@@ -40,35 +132,13 @@
 			"response": []
 		},
 		{
-			"name": "file",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:5000/file",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000",
-					"path": [
-						"file"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "active",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"file_name\": [\r\n        \"book.xml\"\r\n    ]\r\n}",
+					"raw": "{\r\n    \"file_name\": [\r\n        \"book3_book_1.xml\"\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -87,30 +157,6 @@
 					"port": "5000",
 					"path": [
 						"active"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "file/rem/sim",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:5000/file/rem/sim",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000",
-					"path": [
-						"file",
-						"rem",
-						"sim"
 					]
 				}
 			},
@@ -140,12 +186,12 @@
 			"response": []
 		},
 		{
-			"name": "tag/rem",
+			"name": "file/rem-with-tag",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/tag/rem",
+					"raw": "http://127.0.0.1:5000/file/rem-with-tag",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -155,15 +201,15 @@
 					],
 					"port": "5000",
 					"path": [
-						"tag",
-						"rem"
+						"file",
+						"rem-with-tag"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "clear",
+			"name": "clear tb_main",
 			"event": [
 				{
 					"listen": "test",
@@ -229,7 +275,7 @@
 			"response": []
 		},
 		{
-			"name": "file-to-consider",
+			"name": "export",
 			"event": [
 				{
 					"listen": "test",
@@ -242,43 +288,19 @@
 				}
 			],
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:5000/file-to-consider",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000",
-					"path": [
-						"file-to-consider"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "rem-tag",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"prod\": \"book\",\r\n    \"loc\": \"C:\\\\Users\\\\saksangal\\\\Pictures\\\\saksham\",\r\n    \"tb_name\": \"tb_tag_master\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
 					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
+				},
 				"url": {
-					"raw": "http://127.0.0.1:5000/rem-tag/book2.xml",
+					"raw": "http://127.0.0.1:5000/export",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -288,32 +310,7 @@
 					],
 					"port": "5000",
 					"path": [
-						"rem-tag",
-						"book2.xml"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "file/tag/?file",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:5000/file/tag/book.xml",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000",
-					"path": [
-						"file",
-						"tag",
-						"book.xml"
+						"export"
 					]
 				}
 			},
@@ -325,7 +322,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/tag-in-file/catalog",
+					"raw": "http://127.0.0.1:5000/tag-in-file/book",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -336,7 +333,7 @@
 					"port": "5000",
 					"path": [
 						"tag-in-file",
-						"catalog"
+						"book"
 					]
 				}
 			},
